@@ -1,0 +1,62 @@
+import os
+import shutil
+
+# 源文件夹路径，其中包含要移动的子文件夹
+source_folder = r'C:\Users\zeng\PycharmProjects\pythonProject\...'
+# 目标文件夹路径，.png文件将被移动到这里
+destination_folder = r'C:\Users\zeng\PycharmProjects\pythonProject\...'
+
+# 确保目标文件夹存在，如果不存在则创建
+if not os.path.exists(destination_folder):
+    os.makedirs(destination_folder)
+
+# 遍历源文件夹中的所有子文件夹
+for subfolder_name in os.listdir(source_folder):
+    subfolder_path = os.path.join(source_folder, subfolder_name)
+
+    # 确保是文件夹，不是文件
+    if os.path.isdir(subfolder_path):
+        # 遍历子文件夹中的所有文件
+        for filename in os.listdir(subfolder_path):
+            # 检查文件扩展名是否为.png
+            if filename.endswith('label.png'):
+                # 构建完整的文件路径
+                file_path = os.path.join(subfolder_path, filename)
+                # 构建新的文件名，使用子文件夹的名称（去掉'_json'），并保留.png扩展名
+                new_filename = subfolder_name.replace('_json', '') + '.png'
+                new_file_path = os.path.join(destination_folder, new_filename)
+
+                # 移动文件到目标文件夹并重命名
+                shutil.move(file_path, new_file_path)
+                print(f"Moved and renamed {filename} to {new_filename} in {destination_folder}")
+
+# 再次遍历目标文件夹以重命名文件，去掉'_json'
+for filename in os.listdir(destination_folder):
+    if filename.endswith('.png'):
+        # 构建完整的文件路径
+        file_path = os.path.join(destination_folder, filename)
+        # 构建新的文件名，去掉'_json'
+        new_filename = filename.replace('_json', '')
+        new_file_path = os.path.join(destination_folder, new_filename)
+
+        # 重命名文件
+        os.rename(file_path, new_file_path)
+        print(f"Renamed {filename} to {new_filename} in {destination_folder}")
+
+# JPEGImages文件夹路径
+jpeg_images_folder = r'C:\Users\zeng\PycharmProjects\pythonProject\...'
+# Annotations文件夹路径
+annotations_folder = r'C:\Users\zeng\PycharmProjects\pythonProject\...'
+
+# 获取JPEGImages文件夹中所有.jpg文件的名称列表（不包括扩展名）
+jpeg_images = [os.path.splitext(filename)[0] for filename in os.listdir(jpeg_images_folder) if filename.endswith('.jpg')]
+
+# 获取Annotations文件夹中所有.png文件的名称列表（不包括扩展名）
+annotations_images = [os.path.splitext(filename)[0] for filename in os.listdir(annotations_folder) if filename.endswith('.png')]
+
+# 比较两个列表，找出在JPEGImages中存在但在Annotations中缺失的文件
+missing_images = [jpg for jpg in jpeg_images if jpg not in annotations_images]
+
+# 打印缺失的图片
+for missing_image in missing_images:
+    print(f"Missing .png image for {missing_image}.jpg in {annotations_folder}")
