@@ -1,7 +1,7 @@
 import os
 import glob
 
-path = r'C:\Users\zeng\PycharmProjects\pythonProject\yuliu\data_annotated'  # 这里是指.json文件所在文件夹的路径
+path = r'C:\Users\zeng\PycharmProjects\pythonProject\...'  # 这里是指.json文件所在文件夹的路径
 for json in os.listdir(path):
     if json.endswith('.json'):
         json_file = glob.glob(os.path.join(path, json)) # 返回为列表
