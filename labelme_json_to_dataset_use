@@ -1,0 +1,11 @@
+import os
+import glob
+
+path = r'C:\Users\zeng\PycharmProjects\pythonProject\yuliu\data_annotated'  # 这里是指.json文件所在文件夹的路径
+for json in os.listdir(path):
+    if json.endswith('.json'):
+        json_file = glob.glob(os.path.join(path, json)) # 返回为列表
+# os.system("activate labelme")
+        for file in json_file: # 读取列表中路径
+            os.system('cmd /c "C:\\Users\\zeng\\AppData\\Roaming\\Python\\Python39\\Scripts\\labelme_json_to_dataset.exe" %s' % file)
+            print(file)
